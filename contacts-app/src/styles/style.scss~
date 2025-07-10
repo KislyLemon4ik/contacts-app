@@ -1,0 +1,28 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "./_variables";
+
+.contacts-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-family: $font-main;
+  font-weight: 400;
+  font-size: 18px;
+  color: #ADADAF;
+  background-color: #F6F7F9;
+}
+
+
+

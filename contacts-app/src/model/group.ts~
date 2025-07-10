@@ -1,0 +1,156 @@
+import styles from '../widgets/contactlist/ui/ContactList.module.scss';
+
+export type Contact = {
+    name: string;
+    phone: string;
+};
+
+type GroupState = {
+    id: string;
+    name: string;
+    isTemporary: boolean;
+};
+
+let temporaryGroups: GroupState[] = []; // Временные группы
+let savedGroups: GroupState[] = []; // Сохраненные группы
+
+export const addTemporaryGroup = (name: string) => {
+    temporaryGroups.push({
+        id: `temp-${Date.now()}`,
+        name,
+        isTemporary: true
+    });
+};
+
+export const saveTemporaryGroups = () => {
+    savedGroups = [...savedGroups, ...temporaryGroups];
+    temporaryGroups = [];
+};
+
+export const getGroupsState = (): GroupState[] => {
+    return [...savedGroups, ...temporaryGroups];
+};
+
+export const addNewGroup = (groupName: string = 'Новая группа', initialContacts: Contact[] = []) => {
+    const groupsContainer = document.querySelector<HTMLElement>(`.${styles['contacts-container']}`);
+    const emptyState = document.querySelector<HTMLElement>(`.${styles['empty-state']}`);
+
+    if (!groupsContainer || !emptyState) return;
+
+    emptyState.style.display = 'none';
+    groupsContainer.style.display = 'block';
+
+    // Ищем среди сохраненных групп
+    const existingGroup = findGroupByName(groupsContainer, groupName);
+
+    if (existingGroup) {
+        addContactsToExistingGroup(existingGroup, initialContacts);
+    } else {
+        // Проверяем, есть ли группа во временных
+        const groupState = getGroupsState().find(g => g.name === groupName);
+
+        if (!groupState || !groupState.isTemporary) {
+            // Создаем новую сохраненную группу
+            createNewGroup(groupsContainer, groupName, initialContacts);
+            savedGroups.push({
+                id: `group-${Date.now()}`,
+                name: groupName,
+                isTemporary: false
+            });
+        } else {
+            // Это временная группа - просто добавляем контакты
+            createNewGroup(groupsContainer, groupName, initialContacts);
+        }
+    }
+};
+
+export const renderGroupsList = (): string => {
+    return getGroupsState()
+        .map(group => `
+            <div class="${styles['group-button']}" data-group-id="${group.id}" data-temporary="${group.isTemporary}">
+                <div class="${styles['group-button-text']}">${group.name}</div>
+                <button class="${styles['group-button-delete']}"></button>
+            </div>
+        `).join('');
+};
+
+export const handleGroupDelete = (groupId: string) => {
+    if (groupId.startsWith('temp')) {
+        temporaryGroups = temporaryGroups.filter(g => g.id !== groupId);
+    } else {
+        savedGroups = savedGroups.filter(g => g.id !== groupId);
+    }
+};
+
+// Поиск группы по названию
+const findGroupByName = (container: HTMLElement, name: string): HTMLElement | null => {
+    const headers = container.querySelectorAll(`.${styles['group-header']}`);
+    for (const header of headers) {
+        const titleElement = header.querySelector('span');
+        if (titleElement?.textContent?.trim() === name.trim()) {
+            return header.closest(`.${styles.group}`);
+        }
+    }
+    return null;
+};
+
+// Добавление контактов в существующую группу
+const addContactsToExistingGroup = (groupElement: HTMLElement, contacts: Contact[]) => {
+    const contactsContainer = groupElement.querySelector(`.${styles['group-contacts']}`);
+    if (!contactsContainer) return;
+
+    const newContactsHTML = contacts.map(contact => `
+        <div class="${styles.contact}">
+            <div class="${styles.name}">${contact.name}</div>
+            <div class="${styles.phone}">${contact.phone}</div>
+        </div>
+    `).join('');
+
+    contactsContainer.insertAdjacentHTML('beforeend', newContactsHTML);
+};
+
+// Создание новой группы
+const createNewGroup = (container: HTMLElement, groupName: string, contacts: Contact[]) => {
+    const groupId = `group-${Date.now()}`;
+    const newGroup = document.createElement('div');
+    newGroup.className = styles.group;
+
+    const contactsHTML = contacts.map(contact => `
+        <div class="${styles.contact}">
+            <div class="${styles.name}">${contact.name}</div>
+            <div class="${styles.phone}">${contact.phone}</div>
+        </div>
+    `).join('');
+
+    newGroup.innerHTML = `
+        <div class="${styles['group-header']}" data-group="${groupId}">
+            <span>${groupName}</span>
+            <button class="${styles['group-toggle']}"></button>
+        </div>
+        <div class="${styles['group-contacts']}">
+            ${contactsHTML}
+        </div>
+    `;
+
+    container.appendChild(newGroup);
+    const header = newGroup.querySelector(`.${styles['group-header']}`);
+    if (header) initSingleGroupEvents(header as HTMLElement);
+};
+
+// Инициализация событий группы (без изменений)
+const initSingleGroupEvents = (header: HTMLElement) => {
+    const groupElement = header.closest(`.${styles.group}`);
+    if (!groupElement) return;
+
+    const content = groupElement.querySelector(`.${styles['group-contacts']}`);
+    const toggleBtn = header.querySelector(`.${styles['group-toggle']}`) as HTMLButtonElement;
+
+    header.addEventListener('click', () => {
+        if (content && toggleBtn) {
+            content.classList.toggle(styles['expanded']);
+            const isExpanded = content.classList.contains(styles['expanded']);
+            // Вращаем SVG стрелку через transform
+            toggleBtn.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    });
+};

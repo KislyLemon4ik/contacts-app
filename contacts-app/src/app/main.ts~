@@ -1,0 +1,15 @@
+import './style.scss';
+
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  <div class="contacts-page">
+    <div class="topbar">
+      <div class="topbar__label"> Книга контактов </div>  
+      <div class="topbar__buttons">
+        <button class="topbar__buttons--create">Создать контакт</button>
+        <button class="topbar__buttons--groups">Группы</button>
+      </div>
+    </div>
+    
+    <div class ="contacts-list">Список контактов пуст</div>
+  </div>
+`;

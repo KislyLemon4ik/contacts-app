@@ -1,0 +1,97 @@
+@import "bootstrap/scss/bootstrap";
+
+.contacts-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: 'Circe';
+  font-weight: 400;
+  font-size: 18px;
+  color: #ADADAF;
+  background-color: #F6F7F9;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: 16px 0px;
+    &__label {
+      display: flex;
+      font-family: 'Circe';
+      font-weight: 700;
+      font-size: 18px;
+      color: #005BFE;
+      gap: 16px;
+
+      &::before {
+        content: "";
+        background: url('image/label.svg') no-repeat center;
+        width: 18px;
+        height: 20px;
+      }
+    }
+    &__buttons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+
+      &--create {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background: #F81155;
+        border-radius: 6px;
+        font-family: 'Circe';
+        font-weight: 700;
+        font-size: 14px;
+        color: #FFFFFF;
+        padding: 10px 10px 10px 14px;
+        gap: 8px;
+        border: none;
+
+        &::after {
+          content: '';
+          display: inline-block;
+          background: url('./image/contact-button.svg') no-repeat center center;
+          background-size: contain;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      &--groups {
+        border: none;
+        background: #005BFE;
+        border-radius: 6px;
+        font-family: 'Circe';
+        font-weight: 700;
+        font-size: 14px;
+        color: #FFFFFF;
+        padding: 10px 14px;
+      }
+    }
+}
+
+@font-face {
+  font-family: 'Circe';
+  src: url('./Circe-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+

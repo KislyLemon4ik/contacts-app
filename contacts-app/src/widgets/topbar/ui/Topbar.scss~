@@ -1,0 +1,65 @@
+.topbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: 16px 0px;
+  &__label {
+    display: flex;
+    font-family: $font-main;
+    font-weight: 700;
+    font-size: 18px;
+    color: $color-main;
+    gap: 16px;
+
+    &::before {
+      content: "";
+      background: url('../../../shared/ui/icons/label.svg') no-repeat center;
+      width: 18px;
+      height: 20px;
+    }
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    &--create {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background: #F81155;
+      border-radius: 6px;
+      font-family: $font-main;
+      font-weight: 700;
+      font-size: 14px;
+      color: #FFFFFF;
+      padding: 10px 10px 10px 14px;
+      gap: 8px;
+      border: none;
+
+      &::after {
+        content: '';
+        display: inline-block;
+        background: url('../../../shared/ui/icons/contact-button.svg') no-repeat center center;
+        background-size: contain;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &--groups {
+      border: none;
+      background: $color-main;
+      border-radius: 6px;
+      font-family: $font-main;
+      font-weight: 700;
+      font-size: 14px;
+      color: #FFFFFF;
+      padding: 10px 14px;
+    }
+  }
+}

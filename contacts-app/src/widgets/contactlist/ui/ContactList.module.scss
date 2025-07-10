@@ -1,0 +1,103 @@
+@import "../../../styles/_variables";
+
+.group-contacts {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+
+  &.expanded {
+    max-height: 1000px; // Достаточно большое значение для анимации
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.contact {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.phone {
+  color: #666;
+  font-size: 14px;
+}
+
+.contacts-container {
+  margin-top: 56px;
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-container-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.group {
+  border: none;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.group-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #000000;
+  font-family: $font-main;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 24px;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.group-toggle {
+  width: 24px;
+  height: 24px;
+  background: url('../../../shared/ui/icons/selector-arrow.svg') no-repeat center center;
+  transition: transform 0.3s ease; // Увеличили время анимации для плавности
+  border: none;
+  cursor: pointer;
+  transform: rotate(0deg); // Начальное положение
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  /* Убрали &:active, так как теперь управляем через JS */
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-family: $font-main;
+  font-weight: 400;
+  font-size: 18px;
+  color: #ADADAF;
+  background-color: #F6F7F9;
+}
